@@ -49,7 +49,7 @@ async function run() {
     app.get('/allOffer', async(req,res)=>{
       const query = database.find()
       const result = await query.toArray()
-      res.send(result)
+      res.send(result) 
     })
 
     // Delete
@@ -88,6 +88,27 @@ async function run() {
     const result = await database.updateOne(filter,updateDoc,options)
     res.send(result)
     })
+
+
+
+      // New MongoDb connect for Authentication
+      const newDatabase = client.db('newDB').collection("authentication");
+
+      // Post
+      app.post("/authentication", async(req,res)=>{
+        const request = req.body;
+        const result = await newDatabase.insertOne(request);
+        res.send(result)
+      })
+
+
+
+
+
+
+
+
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
