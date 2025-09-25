@@ -11,7 +11,7 @@ app.use(express.json())
 
 //Mongo add 
 
-const uri = `mongodb+srv://${process.env.USERDB}:${process.env.PASSDB}@cluster0.nfpubcd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = `mongodb+srv://${process.env.USERDB}:${process.env.PASSDB}@cluster0.nfpubcd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 // const uri = "mongodb+srv://<db_username>:<db_password>@cluster0.nfpubcd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -77,10 +77,10 @@ async function run() {
       const updateDoc = {
       $set: {
         ofeertitle:upData.ofeertitle,
-      offerdetails: upData.ofeertitle,
+      offerdetails: upData.offerdetails,
       price:upData.price,
       duration:upData.duration,
-      simname:upData.duration,
+      simname:upData.simname,
       packname:upData.packname,
       photo:upData.photo
       },
@@ -101,7 +101,20 @@ async function run() {
         res.send(result)
       })
 
+      // Get 
+      app.get("/authentication", async(req,res)=>{
+        const cursor = newDatabase.find();  
+        const result = await cursor.toArray()
+        res.send(result)  
+      })
 
+      // Delete
+      app.delete("/authentication/:id", async(req,res)=>{
+        const ids = req.params.id;
+        const filter = {_id: new ObjectId(ids)}
+        const result = await newDatabase.deleteOne(filter)
+        res.send(result)
+      })
 
 
 
